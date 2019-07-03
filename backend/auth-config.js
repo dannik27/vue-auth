@@ -10,6 +10,7 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const jwtsecret = "asld,d1[2pdlodkmcjrbh7fml30,slm";
 
 const database = require("./database");
+const utils = require("./utils");
 
 // Стратегии проверки авторизации
 
@@ -57,7 +58,7 @@ passport.use(
 
 let baseAuth = async function(req, res, next) {
   await passport.authenticate("local", function(err, user) {
-    if (user == false) {
+    if (!user) {
       res.status(401).send("Login failed");
     } else {
       req.user = user;
@@ -68,7 +69,7 @@ let baseAuth = async function(req, res, next) {
 
 let jwtAuth = async function(req, res, next) {
   await passport.authenticate("jwt", function(err, user) {
-    if (user == false) {
+    if (!user) {
       res.status(401).send("Login failed");
     } else {
       req.user = user;
@@ -79,7 +80,7 @@ let jwtAuth = async function(req, res, next) {
 
 // Настройка роутера
 
-router.post("/register", function(req, res) {
+router.post("/register", async function(req, res) {
   let request = req.body;
 
   if (database.findByLogin(request.login)) {
@@ -89,7 +90,7 @@ router.post("/register", function(req, res) {
   database.save({
     name: req.body.name,
     login: req.body.login,
-    password: req.body.password
+    passwordHash: await utils.cryptPassword(req.body.password)
   });
   res.send(`New user created, username:${req.body.name}`);
 });
@@ -100,15 +101,12 @@ router.get("/check", jwtAuth, function(req, res) {
 
 router.post("/login", baseAuth, function(req, res) {
   let user = req.user;
-  if (!user) {
-    res.status(500).send("Internal server error");
-  }
 
   const payload = {
     id: user.id,
     displayName: user.name
   };
-  const token = jwt.sign(payload, jwtsecret);
+  const token = jwt.sign(payload, jwtsecret, { expiresIn: "10s" });
 
   res.send({ user: user.name, token: "JWT " + token });
 });

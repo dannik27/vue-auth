@@ -1,29 +1,7 @@
-# vue-auth
+# TODO
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. Адекватно обрабатывать ситуацию, когда приходит протухший токен
+2. Добавить vue-router с валидацией токена
+3. Добавить роли разграничение прав доступа
+4. Хранить в базе только хеши паролей
+5. Прикрутить нормальную базу данных

@@ -1,9 +1,11 @@
+const utils = require("./utils");
+
 let users = [
   {
     id: 1,
     name: "Petya",
     login: "admin",
-    password: "admin"
+    hashPassword: "$2b$10$ROcg27BQnlRWVl3HoVkPuufs7v5csC0gZxDW0GsVJUMnGi2we/kX2"
   }
 ];
 
@@ -21,7 +23,9 @@ module.exports.findById = function(id) {
 
 module.exports.findByCredentials = function(login, password) {
   return users.find(user => {
-    return user.login === login && user.password === password;
+    return (
+      user.login === login && utils.comparePassword(password, user.hashPassword)
+    );
   });
 };
 
@@ -34,4 +38,5 @@ module.exports.findByLogin = function(login) {
 module.exports.save = function(user) {
   user.id = nextId++;
   users.push(user);
+  console.log(user);
 };
