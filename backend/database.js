@@ -38,5 +38,4 @@ module.exports.findByLogin = function(login) {
 module.exports.save = function(user) {
   user.id = nextId++;
   users.push(user);
-  console.log(user);
 };
