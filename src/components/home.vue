@@ -1,10 +1,12 @@
 <template>
   <div class="container">
-    sdasdasdasdaqw123
+    {{checkResponse}}
   </div>
 </template>
 
 <script>
+
+import axios from 'axios'
 
 export default {
   name: 'app',
@@ -13,31 +15,14 @@ export default {
   },
   data() {
     return {
-      session: {
-        username: "empty",
-        token: "empty"
-      },
-      regForm: {
-        name: "",
-        login: "",
-        password: ""
-      },
-      loginForm: {
-        login: "",
-        password: ""
-      },
-      regResponse: null,
-      loginResponse: null,
-      checkResponse: null,
+      checkResponse: null
     }
   },
-  methods: {
-
-
-
-  },
   mounted() {
-
+    axios.get('http://localhost:3000/auth/check')
+      .then((response) => {
+        this.checkResponse = response.data
+      })
   },
 }
 </script>

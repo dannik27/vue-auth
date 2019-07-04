@@ -15,25 +15,12 @@
       <span>Token: {{ session.token }}</span>
       <button @click="doLogout()">Выйти</button>
     </div>
-
-    <div class="block">
-      <button @click="doCheck()">Проверка доступа</button>
-      <span v-if="checkResponse">Check: {{ checkResponse }}</span>
-    </div>
   </div>
 </template>
 
 <script>
 
 import axios from 'axios'
-
-function authHeaders() {
-  return {
-    headers: {
-      authorization: localStorage.token
-    }
-  }
-}
 
 export default {
   name: 'app',
@@ -50,9 +37,7 @@ export default {
         login: "",
         password: ""
       },
-      regResponse: null,
       loginResponse: null,
-      checkResponse: null,
     }
   },
   methods: {
@@ -71,15 +56,6 @@ export default {
     doLogout() {
       this.session.username = null
       this.session.token = null
-    },
-    doCheck() {
-      axios.get('http://localhost:3000/auth/check', authHeaders())
-        .then((response) => {
-          this.checkResponse = response.data
-        })
-        .catch(() => {
-          this.checkResponse = "Check failed"
-        })
     }
   },
   mounted() {
