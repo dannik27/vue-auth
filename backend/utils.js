@@ -13,9 +13,5 @@ exports.cryptPassword = function(password) {
 };
 
 exports.comparePassword = function(plainPass, hashword) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {
-      return err == null ? resolve(isPasswordMatch) : reject(err);
-    });
-  });
+  return bcrypt.compareSync(plainPass, hashword);
 };

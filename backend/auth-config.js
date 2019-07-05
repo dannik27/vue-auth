@@ -90,7 +90,7 @@ router.post("/register", async function(req, res) {
   database.save({
     name: req.body.name,
     login: req.body.login,
-    passwordHash: await utils.cryptPassword(req.body.password)
+    hashPassword: await utils.cryptPassword(req.body.password)
   });
   res.send(`New user created, username:${req.body.name}`);
 });
